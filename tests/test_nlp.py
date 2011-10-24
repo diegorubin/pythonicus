@@ -1,6 +1,16 @@
 import unittest
 
-from pythonicus.nlp.base import *
+
+try:
+    from pythonicus.nlp.base import *
+except ImportError:
+    import sys
+    from os.path import join, abspath, dirname
+    parentpath = abspath(join(dirname(__file__), '..'))
+    #srcpath = join(parentpath, 'src')
+    sys.path.append(parentpath)
+    from pythonicus.nlp.base import *
+
 
 class test_base(unittest.TestCase):
 

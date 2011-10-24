@@ -12,3 +12,8 @@ class PersistedText():
     def tokens(self):
         return self.__tokens__
 
+    def __checkword__(self,word):
+        description = ""
+
+        return description
+

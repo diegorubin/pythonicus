@@ -15,10 +15,10 @@ class Application(cyclone.web.Application):
             (r"/", IndexHandler),
         ]
 
-        #settings = {
+        settings = {
         #    "static_path": "./static",
         #    "template_path": "./template",
-        #}
+        }
 
         cyclone.web.Application.__init__(self, handlers, **settings)
 
