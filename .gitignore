@@ -1,0 +1,10 @@
+#tmp
+*.swp
+*~
+
+# binaries
+*.pyc
+build
+dist
+*.egg-info
+
