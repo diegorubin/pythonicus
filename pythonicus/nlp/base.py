@@ -1,6 +1,6 @@
 import nltk
 
-class PersistedText():
+class Document():
     def __init__(self, text = ""):
         self.__text__ = text
 
