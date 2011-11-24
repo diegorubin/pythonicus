@@ -2,17 +2,21 @@
 
 import sys
 import cyclone.web
-from twisted.python import log
-from twisted.internet import reactor
 
 class IndexHandler(cyclone.web.RequestHandler):
     def get(self):
         self.write("hello world")
 
+class DocumentHandler(cyclone.web.RequestHandler):
+    def get(self):
+        pass
+
+
 class Application(cyclone.web.Application):
     def __init__(self):
         handlers = [
             (r"/", IndexHandler),
+            (r"/documents", DocumentHandler),
         ]
 
         settings = {

@@ -46,3 +46,22 @@ def load_document(uid):
         pass
 
     return d
+
+def all_documents(**kwargs):
+    documents = []
+
+    try:
+        db = get_connection()
+        docs = db.documents.find()
+
+        for doc in docs:
+            d = Document()
+            d.__dict__ = doc
+
+            documents.append(d)
+
+    except:
+        pass
+
+    return documents
+

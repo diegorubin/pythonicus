@@ -30,6 +30,17 @@ class test_base(unittest.TestCase):
         rd = load_document(uid)
         self.assertEqual(rd.text,text)
 
+    def test_recorver_documents(self):
+        
+        doc = Document("apenas um outro teste")
+        self.assertEqual(doc.save(),True)
+
+        doc = Document("apenas um outro teste")
+        self.assertEqual(doc.save(),True)
+
+        documents = all_documents()
+        self.assertEqual(len(documents) > 0, True)
+
 
 unittest.main()
 
