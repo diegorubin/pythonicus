@@ -1,22 +1,20 @@
 import nltk
+import sys
+
+from os.path import join, abspath, dirname
+apipath = abspath(join(dirname(__file__), ".."))
+sys.path.append(apipath)
+
+from db.connection import *
 
 class Document():
     def __init__(self, title = "", uid = ""):
-        self.__title__ = title
-        self.__uid__ = uid
-
-    # Setters and getters
-    def set_text(self, text):
-        self.__text__ = text
-
-    def get_text(self):
-        return self.__text__
-
-    def get_uid(self):
-        return self.__uid__
+        self.title = title
+        self.uid = uid
+        self.text = ''
 
     def tokenize(self):
-        self.__tokens__ = nltk.word_tokenize(self.__text__)
+        self.__tokens__ = nltk.word_tokenize(self.text)
 
         return self.__tokens__
 
@@ -27,17 +25,24 @@ class Document():
         result = True
 
         try:
-            pass
+            db = get_connection()
+            self._id = db.documents.insert(self.__dict__)
         except:
-            pass
+            result = False
 
         return result
         
-    # Privates Methods
-    def __checkword__(self,word):
-        description = ""
-
-        return description
-
 def load_document(uid):
-    return uid
+
+    d = Document()
+    
+    try:
+        db = get_connection()
+        obj = db.documents.find({"_id" : ObjectId(uid)})
+
+
+        d.__dict__ = obj[0]
+    except:
+        pass
+
+    return d

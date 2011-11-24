@@ -1,4 +1,5 @@
 from pymongo.connection import Connection
+from pymongo.objectid import ObjectId
 import os
 
 db = None
