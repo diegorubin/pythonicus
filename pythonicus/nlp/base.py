@@ -20,6 +20,26 @@ class Document():
     def tokens(self):
         return self.__tokens__
 
+    def remove_stopwords(self):
+        expressions = []
+        expression = []
+        stopwords = nltk.corpus.stopwords.words('portuguese')
+
+        for w in self.tokenize():
+
+            if w.lower() in stopwords:
+                if len(expression) > 0:
+                    expressions.append(expression)
+                    expression = []
+            else:
+                expression.append(w)
+
+        if len(expression) > 0:
+            expressions.append(expression)
+
+        return expressions
+
+
     def to_json(self):
         json = self.__dict__
         json['_id'] = str(json['_id'])
