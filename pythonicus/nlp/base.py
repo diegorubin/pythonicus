@@ -8,9 +8,8 @@ sys.path.append(apipath)
 from db.connection import *
 
 class Document():
-    def __init__(self, title = "", uid = ""):
+    def __init__(self, title = ""):
         self.title = title
-        self.uid = uid
         self.text = ''
 
     def tokenize(self):
@@ -20,6 +19,12 @@ class Document():
 
     def tokens(self):
         return self.__tokens__
+
+    def to_json(self):
+        json = self.__dict__
+        json['_id'] = str(json['_id'])
+
+        return json
 
     def save(self):
         result = True
