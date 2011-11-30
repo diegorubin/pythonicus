@@ -2,7 +2,7 @@
 
 import sys
 import cyclone.web
-import pdb
+import ast
 
 from os.path import join, abspath, dirname
 apipath = abspath(join(dirname(__file__), ".."))
@@ -24,22 +24,44 @@ class DocumentHandler(cyclone.web.RequestHandler):
             self.write(doc.to_json())
 
         except:
-            self.write({})
+            self.write({'status' : '500'})
+
 class AllDocumentsHandler(cyclone.web.RequestHandler):
     def get(self):
         self.set_header("Content-Type", "application/json")
 
         documents = all_documents()
+        arr_documents = []
 
         for doc in documents:
-            doc = doc.to_json
+            arr_documents.append(doc.to_json())
 
-        self.write(documents)
+        self.write({'status' : '200',
+                    'documents' : str(arr_documents)})
 
         try:
             pass
         except:
-            self.write([])
+            self.write({'status':'500',
+                        'documents':[]})
+
+    def post(self):
+
+        try:
+            self.set_header("Content-Type", "application/json")
+    
+            document = ast.literal_eval(self.request.body)
+    
+            d = Document()
+            d.__dict__ = document
+            d.save()
+    
+            self.write({'status' : '200',
+                        'id' : str(d._id)})
+
+        except:
+            self.write({'status': '500'},
+                       {'erro' : 'documento não pode ser salvo'})
 
 class Application(cyclone.web.Application):
     def __init__(self):
