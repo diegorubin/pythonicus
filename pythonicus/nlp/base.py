@@ -21,7 +21,7 @@ class Document():
         return self.__tokens__
 
     def remove_stopwords(self):
-        expressions = []
+        self.expressions = []
         expression = []
         stopwords = nltk.corpus.stopwords.words('portuguese')
 
@@ -29,15 +29,15 @@ class Document():
 
             if w.lower() in stopwords:
                 if len(expression) > 0:
-                    expressions.append(expression)
+                    self.expressions.append(expression)
                     expression = []
             else:
                 expression.append(w)
 
         if len(expression) > 0:
-            expressions.append(expression)
+            self.expressions.append(expression)
 
-        return expressions
+        return self.expressions
 
 
     def to_json(self):
