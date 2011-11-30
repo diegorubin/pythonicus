@@ -23,8 +23,8 @@ class test_base(unittest.TestCase):
         doc.text = "Um Arduino para Diego"
         expressions = doc.remove_stopwords()
 
-        self.assertIn(['Arduino'], expressions)
-        self.assertIn(['Diego'], expressions)
+        self.assertTrue(['Arduino'] in expressions)
+        self.assertTrue(['Diego'] in expressions)
 
     def test_persist(self):
 
