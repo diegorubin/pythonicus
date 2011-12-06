@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Demonstração do Pythonicus</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+
+  <style type="text/css">
+    body{text-align: center;}
+    #col1{ width: 40%; float: left; text-align: center; height: 400px; margin: 10px; }
+    #texto{ height: 350px; width: 100%;}
+    #col2{ width: 40%; float: left; text-align: center; }
+    #footer{ width: 100%; text-align: center; clear: both; }
+  </style>
+
+  <body>
+
+    <div id="col1">
+      <h3>Texto</h3>
+      <textarea id="texto"></textarea>
+      <input type="submit" id="analisar" />
+    </div>
+
+    <div id="col2">
+      <h3>Termos</h3>
+    </div>
+
+    <div id="footer">
+      Desenvolvido por <a href="http://diegorubin.com">diegorubin.com</a>
+    </div>
+
+  </body>
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $("#analisar").click(function(event) {
+      var obj = {};
+
+      obj['title'] = "Demo text";
+      obj['text'] = $("#texto").val();
+
+      $.ajax({
+        type: "POST",
+        data: obj,
+        url: "http://localhost:8888/documents",
+        success: function(data){
+          alert(data);
+        }
+      });
+      event.preventDefault();
+    });
+
+  </script>
+</html>

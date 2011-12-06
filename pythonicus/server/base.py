@@ -60,8 +60,8 @@ class AllDocumentsHandler(cyclone.web.RequestHandler):
                         'id' : str(d._id)})
 
         except:
-            self.write({'status': '500'},
-                       {'erro' : 'documento não pode ser salvo'})
+            self.write({'status': '500',
+                        'erro' : 'documento não pode ser salvo'})
 
 class Application(cyclone.web.Application):
     def __init__(self):
