@@ -11,18 +11,24 @@ sys.path.append(apipath)
 from pythonicus.nlp.base import *
 
 
-class IndexHandler(cyclone.web.RequestHandler):
+class DemoHandler(cyclone.web.RequestHandler):
     def get(self):
-        self.write("hello world")
+        
+        static_path = abspath(join(dirname(__file__), "..", "..", "demo"))
+
+        # O esquema do static nao esta rolando
+        f = open(static_path + "/index.html")
+
+        self.write(f.read())
 
 class DocumentHandler(cyclone.web.RequestHandler):
     def get(self,uid):
         self.set_header("Content-Type", "application/json")
 
+        doc = load_document(uid)
+        self.write(doc.to_json())
         try:
-            doc = load_document(uid)
-            self.write(doc.to_json())
-
+            pass
         except:
             self.write({'status' : '500'})
 
@@ -30,26 +36,24 @@ class AllDocumentsHandler(cyclone.web.RequestHandler):
     def get(self):
         self.set_header("Content-Type", "application/json")
 
-        documents = all_documents()
-        arr_documents = []
-
-        for doc in documents:
-            arr_documents.append(doc.to_json())
-
-        self.write({'status' : '200',
-                    'documents' : str(arr_documents)})
-
         try:
-            pass
+            documents = all_documents()
+            arr_documents = []
+    
+            for doc in documents:
+                arr_documents.append(doc.to_json())
+    
+            self.write({'status' : '200',
+                        'documents' : str(arr_documents)})
+
         except:
             self.write({'status':'500',
                         'documents':[]})
 
     def post(self):
+        self.set_header("Content-Type", "application/json")
 
         try:
-            self.set_header("Content-Type", "application/json")
-    
             document = ast.literal_eval(self.request.body)
     
             d = Document()
@@ -66,14 +70,13 @@ class AllDocumentsHandler(cyclone.web.RequestHandler):
 class Application(cyclone.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", IndexHandler),
+            (r"/demo", DemoHandler),
             (r"/documents", AllDocumentsHandler),
             (r"/documents/(\w+)", DocumentHandler),
         ]
 
         settings = {
-        #    "static_path": "./static",
-        #    "template_path": "./template",
+                'static_path' : os.path.join(os.path.dirname(__file__), "static"),
         }
 
         cyclone.web.Application.__init__(self, handlers, **settings)

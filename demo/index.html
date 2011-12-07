@@ -18,10 +18,15 @@
       <h3>Texto</h3>
       <textarea id="texto"></textarea>
       <input type="submit" id="analisar" />
+      <input type="hidden" id="hash" value="" />
     </div>
 
     <div id="col2">
       <h3>Termos</h3>
+      <div id="terms">
+        <p id="resultbody">
+        </p>
+      </div>
     </div>
 
     <div id="footer">
@@ -31,18 +36,40 @@
   </body>
   <script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script>
   <script type="text/javascript">
+
+    function loadText(hash) {
+
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "/documents/" + hash,
+        success: function(data){
+          $("#resultbody").html(JSON.stringify(data));
+        }
+      });
+ 
+    }
+
     $("#analisar").click(function(event) {
       var obj = {};
+      var url = "/documents";
+
+      var hash = $("#hash").val();
+
+      if(hash != "") url = url + "/" + hash;
+
 
       obj['title'] = "Demo text";
       obj['text'] = $("#texto").val();
 
       $.ajax({
         type: "POST",
-        data: obj,
-        url: "http://localhost:8888/documents",
+        dataType: "json",
+        data: JSON.stringify(obj),
+        url: '/documents',
         success: function(data){
-          alert(data);
+          $("#hash").val(data['id']);
+          loadText(data['id']);
         }
       });
       event.preventDefault();

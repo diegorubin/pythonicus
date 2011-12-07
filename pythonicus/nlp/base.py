@@ -13,12 +13,9 @@ class Document():
         self.text = ''
 
     def tokenize(self):
-        self.__tokens__ = nltk.word_tokenize(self.text)
+        self.tokens = nltk.word_tokenize(self.text)
 
-        return self.__tokens__
-
-    def tokens(self):
-        return self.__tokens__
+        return self.tokens
 
     def remove_stopwords(self):
         self.expressions = []
@@ -42,11 +39,13 @@ class Document():
 
     def to_json(self):
         json = self.__dict__
-        json['_id'] = str(json['_id'])
+        #json['_id'] = str(json['_id'])
+        json['_id'] = None
 
         return json
 
     def save(self):
+        self.remove_stopwords()
         result = True
 
         try:
