@@ -55,14 +55,14 @@ class AllDocumentsHandler(cyclone.web.RequestHandler):
 
         try:
             document = ast.literal_eval(self.request.body)
-    
+            
             d = Document()
             d.__dict__ = document
             d.save()
-    
+            
             self.write({'status' : '200',
                         'id' : str(d._id)})
-
+ 
         except:
             self.write({'status': '500',
                         'erro' : 'documento não pode ser salvo'})

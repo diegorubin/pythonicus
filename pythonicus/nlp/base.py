@@ -34,13 +34,18 @@ class Document():
         if len(expression) > 0:
             self.expressions.append(expression)
 
+        self.__normalize_expressions()
+
         return self.expressions
 
 
     def to_json(self):
         json = self.__dict__
-        #json['_id'] = str(json['_id'])
-        json['_id'] = None
+
+        try:
+            json['_id'] = str(json['_id'])
+        except:
+            json['_id'] = None
 
         return json
 
@@ -55,6 +60,17 @@ class Document():
             result = False
 
         return result
+
+    def __normalize_expressions(self):
+        if self.expressions:
+            self.expressions.sort()
+            last = self.expressions[-1]
+
+            for i in range(len(self.expressions)-2, -1, -1):
+                if last == self.expressions[i]:
+                    del self.expressions[i]
+                else:
+                    last = self.expressions[i]
         
 def load_document(uid):
 
