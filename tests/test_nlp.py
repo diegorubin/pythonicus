@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import unittest
 
 try:
@@ -25,6 +27,22 @@ class test_base(unittest.TestCase):
 
         self.assertTrue(['Arduino'] in expressions)
         self.assertTrue(['Diego'] in expressions)
+
+    def test_remove_punctuation(self):
+        doc = Document("outro teste")
+        doc.text = "Olho, Orelha."
+        expressions = doc.remove_stopwords()
+
+        self.assertTrue(['Olho'] in expressions)
+        self.assertTrue(['Orelha'] in expressions)
+
+    def test_remove_duplicated(self):
+        doc = Document("outro teste")
+        doc.text = "Olho, Olho."
+        expressions = doc.remove_stopwords()
+
+        self.assertTrue(len(expressions),1)
+
 
     def test_persist(self):
 

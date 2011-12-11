@@ -1,4 +1,7 @@
+# coding: utf-8
+
 import nltk
+import string
 import sys
 
 from os.path import join, abspath, dirname
@@ -6,6 +9,8 @@ apipath = abspath(join(dirname(__file__), ".."))
 sys.path.append(apipath)
 
 from db.connection import *
+
+table = string.maketrans("","")
 
 class Document():
     def __init__(self, title = ""):
@@ -24,7 +29,9 @@ class Document():
 
         for w in self.tokenize():
 
-            if w.lower() in stopwords:
+            if (w.lower() in stopwords) or (w in string.punctuation):
+                w = w.translate(table, string.punctuation)
+                
                 if len(expression) > 0:
                     self.expressions.append(expression)
                     expression = []
