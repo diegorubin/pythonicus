@@ -67,6 +67,24 @@ class test_base(unittest.TestCase):
         documents = all_documents()
         self.assertTrue(len(documents) > 0)
 
+    def test_update_document(self):
+        text = "o corpo do texto teste";
+
+        doc = Document("apenas um outro teste")
+        doc.text = text
+        self.assertTrue(doc.save())
+
+        uid = doc._id
+        rd = load_document(uid)
+        rd.text = "carregando novamente"
+        rd.save()
+
+        rd = load_document(uid)
+        self.assertEqual(rd.text,"carregando novamente")
+
+
+
+
 
 unittest.main()
 

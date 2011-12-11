@@ -62,7 +62,15 @@ class Document():
 
         try:
             db = get_connection()
-            self._id = db.documents.insert(self.__dict__)
+
+            if self.__dict__.get("_id"):
+                db.documents.update({'_id' : ObjectId(self._id)}, 
+                                    {"$set" :{u'text' : self.text,
+                                              u'expressions' : self.expressions,
+                                              u'title': self.title,
+                                              u'tokens': self.tokens}})
+            else:
+                self._id = db.documents.insert(self.__dict__)
         except:
             result = False
 

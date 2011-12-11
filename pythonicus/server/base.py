@@ -22,15 +22,34 @@ class DemoHandler(cyclone.web.RequestHandler):
         self.write(f.read())
 
 class DocumentHandler(cyclone.web.RequestHandler):
-    def get(self,uid):
+    def get(self, uid):
+        self.set_header("Content-Type", "application/json")
+
+        try:
+            doc = load_document(uid)
+            self.write(doc.to_json())
+        except:
+            self.write({'status' : '500'})
+
+    def put(self, uid):
         self.set_header("Content-Type", "application/json")
 
         doc = load_document(uid)
-        self.write(doc.to_json())
+        document = ast.literal_eval(self.request.body)
+
+        doc.text = document['text']
+        doc.title = document['title']
+
+        doc.save()
+
+        self.write({'status' : '200',
+                    'id' : str(doc._id)})
+
         try:
             pass
         except:
             self.write({'status' : '500'})
+
 
 class AllDocumentsHandler(cyclone.web.RequestHandler):
     def get(self):
