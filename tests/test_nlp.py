@@ -43,6 +43,13 @@ class test_base(unittest.TestCase):
 
         self.assertTrue(len(expressions),1)
 
+    def test_remove_accents_before_tokezine(self):
+        doc = Document("outro teste")
+        doc.text = "Cabeça."
+        expressions = doc.remove_stopwords()
+
+        self.assertTrue(['Cabeca'] in expressions)
+        self.assertTrue(len(expressions),1)
 
     def test_persist(self):
 
@@ -81,10 +88,6 @@ class test_base(unittest.TestCase):
 
         rd = load_document(uid)
         self.assertEqual(rd.text,"carregando novamente")
-
-
-
-
 
 unittest.main()
 

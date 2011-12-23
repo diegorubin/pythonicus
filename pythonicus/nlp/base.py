@@ -3,6 +3,7 @@
 import nltk
 import string
 import sys
+from unicodedata import normalize
 
 from os.path import join, abspath, dirname
 apipath = abspath(join(dirname(__file__), ".."))
@@ -18,7 +19,8 @@ class Document():
         self.text = ''
 
     def tokenize(self):
-        self.tokens = nltk.word_tokenize(self.text)
+        text = self.remove_accents(self.text)
+        self.tokens = nltk.word_tokenize(text)
 
         return self.tokens
 
@@ -75,6 +77,9 @@ class Document():
             result = False
 
         return result
+
+    def remove_accents(self,text):
+        return normalize('NFKD', text.decode("utf-8")).encode('ASCII','ignore')
 
     def __normalize_expressions(self):
         if self.expressions:
