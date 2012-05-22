@@ -8,7 +8,7 @@
     body{text-align: center;}
     #col1{ width: 40%; float: left; text-align: center; height: 400px; margin: 10px; }
     #texto{ height: 350px; width: 100%;}
-    #col2{ width: 40%; float: left; text-align: center; }
+    #col2{ width: 40%; float: left; }
     #footer{ width: 100%; text-align: center; clear: both; }
   </style>
 
@@ -22,10 +22,16 @@
     </div>
 
     <div id="col2">
-      <h3>Termos</h3>
       <div id="terms">
-        <p id="resultbody">
-        </p>
+        <h3>Termos</h3>
+        <ul id="tokens">
+        </ul>
+      </div>
+
+      <div id="table-expressions">
+        <h3>Expressões</h3>
+        <table id="expressions">
+        </table>
       </div>
     </div>
 
@@ -44,7 +50,39 @@
         dataType: "json",
         url: "/documents/" + hash,
         success: function(data){
-          $("#resultbody").html(JSON.stringify(data));
+          var tokens = $("#tokens");
+          tokens.html("");
+
+          var expressions = $("#expressions");
+          expressions.html("");
+
+          for(t in data.tokens ) {
+            var li = $("<li></li>");
+            li.html(data.tokens[t]);
+
+            tokens.append(li);
+          }
+
+          //var header_table = $("<th>Expressão</th> <th> Radicalizada <th/>");
+          expressions.html("<th>Expressão</th> <th> Radicalizada <th/>");
+
+          for(e in data.expressions) {
+            var line = $("<tr></tr>");
+
+            var cell_expression = $("<td></td>");
+            var cell_root = $("<td></td>");
+
+            cell_expression.html(data.expressions[e].join(" "));
+
+            if(data.root_terms)
+              cell_root.html(data.root_terms[e].join(" "));
+
+            line.append(cell_expression);
+            line.append(cell_root);
+
+            expressions.append(line);
+          }
+
         }
       });
  

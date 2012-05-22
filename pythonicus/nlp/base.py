@@ -24,6 +24,18 @@ class Document():
 
         return self.tokens
 
+    def stem(self):
+        s = nltk.stem.RSLPStemmer()
+        self.root_terms = []
+
+        for expression in self.expressions:
+            root_expression = []
+            for word in expression:
+                root_expression.append(s.stem(word))
+
+            self.root_terms.append(root_expression)
+        return self.root_terms
+
     def remove_stopwords(self):
         self.expressions = []
         expression = []
@@ -60,6 +72,7 @@ class Document():
 
     def save(self):
         self.remove_stopwords()
+        self.stem()
         result = True
 
         try:
@@ -69,6 +82,7 @@ class Document():
                 db.documents.update({'_id' : ObjectId(self._id)}, 
                                     {"$set" :{u'text' : self.text,
                                               u'expressions' : self.expressions,
+                                              u'root_terms': self.root_terms,
                                               u'title': self.title,
                                               u'tokens': self.tokens}})
             else:
