@@ -94,9 +94,13 @@ class Application(cyclone.web.Application):
             (r"/documents/(\w+)", DocumentHandler),
         ]
 
-        settings = {
-                'static_path' : os.path.join(os.path.dirname(__file__), "static"),
-        }
+        static_path = os.path.join(os.path.dirname(__file__), "static")
+        settings = dict(
+            static_path = os.path.join(os.path.dirname(__file__), "static")
+        )
+
+        print static_path
+        print settings
 
         cyclone.web.Application.__init__(self, handlers, **settings)
 
