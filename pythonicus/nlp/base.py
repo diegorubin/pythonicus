@@ -20,7 +20,14 @@ class Document():
 
     def tokenize(self):
         text = self.remove_accents(self.text)
-        self.tokens = nltk.word_tokenize(text)
+        tokens = nltk.word_tokenize(text)
+
+        self.tokens = []
+        stopwords = nltk.corpus.stopwords.words('portuguese')
+        for w in tokens:
+            if not ((w.lower() in stopwords) or (w in string.punctuation)):
+                self.tokens.append(w)
+                
 
         return self.tokens
 
@@ -28,20 +35,20 @@ class Document():
         s = nltk.stem.RSLPStemmer()
         self.root_terms = []
 
-        for expression in self.expressions:
-            root_expression = []
-            for word in expression:
-                root_expression.append(s.stem(word))
+        for token in self.tokens:
+            self.root_terms.append(s.stem(token))
 
-            self.root_terms.append(root_expression)
         return self.root_terms
 
     def remove_stopwords(self):
+        text = self.remove_accents(self.text)
+        tokens = nltk.word_tokenize(text)
+
         self.expressions = []
         expression = []
         stopwords = nltk.corpus.stopwords.words('portuguese')
 
-        for w in self.tokenize():
+        for w in tokens:
 
             if (w.lower() in stopwords) or (w in string.punctuation):
                 w = w.translate(table, string.punctuation)
@@ -71,14 +78,16 @@ class Document():
         return json
 
     def save(self):
+
+        self.tokenize()
         self.remove_stopwords()
         self.stem()
+
         result = True
 
         try:
             db = get_connection()
-
-            if self.__dict__.get("_id"):
+            if "_id" in dir(self):
                 db.documents.update({'_id' : ObjectId(self._id)}, 
                                     {"$set" :{u'text' : self.text,
                                               u'expressions' : self.expressions,
@@ -114,8 +123,8 @@ def load_document(uid):
         db = get_connection()
         obj = db.documents.find({"_id" : ObjectId(uid)})
 
-
         d.__dict__ = obj[0]
+        d.__dict__["_id"] = uid
     except:
         pass
 

@@ -6,7 +6,9 @@
   </head>
 
   <style type="text/css">
-    body{text-align: center;}
+    table{width: 100%;}
+    ul{list-style: none;}
+    ul li{margin: 0px; padding: 0px;}
     #col1{ width: 40%; float: left; text-align: center; height: 400px; margin: 10px; }
     #texto{ height: 350px; width: 100%;}
     #col2{ width: 40%; float: left; }
@@ -24,7 +26,7 @@
 
     <div id="col2">
 
-      <ul id="content" class="nav nav-tabs">
+      <ul id="content" class="nav nav-pills">
         <li class="active">
           <a href="#terms">Termos</a>
         </li>
@@ -41,7 +43,7 @@
         </div>
 
         <div id="table-expressions" class="tab-pane">
-          <table id="expressions">
+          <table id="expressions" class="zebra-striped">
           </table>
         </div>
 
@@ -82,16 +84,16 @@
           //var header_table = $("<th>Expressão</th> <th> Radicalizada <th/>");
           expressions.html("<th>Expressão</th> <th> Radicalizada <th/>");
 
-          for(e in data.expressions) {
+          for(e in data.tokens) {
             var line = $("<tr></tr>");
 
             var cell_expression = $("<td></td>");
             var cell_root = $("<td></td>");
 
-            cell_expression.html(data.expressions[e].join(" "));
+            cell_expression.html(data.tokens[e]);
 
             if(data.root_terms)
-              cell_root.html(data.root_terms[e].join(" "));
+              cell_root.html(data.root_terms[e]);
 
             line.append(cell_expression);
             line.append(cell_root);
@@ -111,7 +113,6 @@
       var hash = $("#hash").val();
 
       if(hash != "") url = url + "/" + hash;
-
 
       obj['title'] = "Demo text";
       obj['text'] = $("#texto").val();

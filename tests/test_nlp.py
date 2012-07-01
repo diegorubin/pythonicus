@@ -18,7 +18,7 @@ class test_base(unittest.TestCase):
         doc = Document("apenas um teste")
         doc.text = "apenas um teste"
         tokens = doc.tokenize()
-        self.assertEqual(len(tokens),3)
+        self.assertEqual(len(tokens),2)
 
     def test_remove_stopwors(self):
         doc = Document("frase")
