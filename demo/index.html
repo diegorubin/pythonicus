@@ -82,21 +82,26 @@
           }
 
           //var header_table = $("<th>Expressão</th> <th> Radicalizada <th/>");
-          expressions.html("<th>Expressão</th> <th> Radicalizada <th/>");
+          expressions.html("<th>Expressão</th> <th> Radicalizada <th/> <th> Tag </th>");
 
           for(e in data.tokens) {
             var line = $("<tr></tr>");
 
             var cell_expression = $("<td></td>");
             var cell_root = $("<td></td>");
+            var cell_tag = $("<td></td>");
 
             cell_expression.html(data.tokens[e]);
 
             if(data.root_terms)
               cell_root.html(data.root_terms[e]);
 
+            if(data.tags)
+              cell_tag.html(data.tags[e][1]);
+
             line.append(cell_expression);
             line.append(cell_root);
+            line.append(cell_tag);
 
             expressions.append(line);
           }

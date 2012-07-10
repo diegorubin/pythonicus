@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import nltk
+from nltk.corpus import floresta
 import string
 import sys
 from unicodedata import normalize
@@ -67,6 +68,22 @@ class Document():
         return self.expressions
 
 
+    def tagger(self):
+        self.tags = []
+
+        tsents = floresta.tagged_sents()
+        tsents = [[(w.lower(),self.__simplify_tag(t)) for (w,t) in sent] for sent in tsents if sent]
+        train = tsents
+
+        tagger0 = nltk.DefaultTagger('n')
+        tagger1 = nltk.UnigramTagger(train, backoff=tagger0)
+
+        self.tags = tagger1.tag(self.tokens)
+        #for token in self.tokens:
+        #    self.tags.append(tagger1.tag([token]))
+
+        return self.tags
+
     def to_json(self):
         json = self.__dict__
 
@@ -82,6 +99,7 @@ class Document():
         self.tokenize()
         self.remove_stopwords()
         self.stem()
+        self.tagger()
 
         result = True
 
@@ -103,6 +121,12 @@ class Document():
 
     def remove_accents(self,text):
         return normalize('NFKD', text.decode("utf-8")).encode('ASCII','ignore')
+
+    def __simplify_tag(self, t):
+        if "+" in t:
+            return t[t.index("+")+1:]
+        else:
+            return t
 
     def __normalize_expressions(self):
         if self.expressions:
