@@ -79,8 +79,6 @@ class Document():
         tagger1 = nltk.UnigramTagger(train, backoff=tagger0)
 
         self.tags = tagger1.tag(self.tokens)
-        #for token in self.tokens:
-        #    self.tags.append(tagger1.tag([token]))
 
         return self.tags
 
@@ -94,12 +92,30 @@ class Document():
 
         return json
 
+    def calcule_frequences(self):
+
+        self.frequences = []
+        totals = {}
+        total = len(self.root_terms)
+
+        for term in self.root_terms:
+            if term in totals:
+                totals[term] += 1
+            else:
+                totals[term] = 0
+
+        for key in totals.keys():
+            self.frequences.append([key, float(totals[key])/total])
+
+        return self.frequences
+
     def save(self):
 
         self.tokenize()
         self.remove_stopwords()
         self.stem()
         self.tagger()
+        self.calcule_frequences()
 
         result = True
 
@@ -109,6 +125,7 @@ class Document():
                 db.documents.update({'_id' : ObjectId(self._id)}, 
                                     {"$set" :{u'text' : self.text,
                                               u'expressions' : self.expressions,
+                                              u'frequences' : self.frequences,
                                               u'root_terms': self.root_terms,
                                               u'title': self.title,
                                               u'tokens': self.tokens}})

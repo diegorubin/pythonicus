@@ -89,5 +89,15 @@ class test_base(unittest.TestCase):
         rd = load_document(uid)
         self.assertEqual(rd.text,"carregando novamente")
 
+    def test_calcule_frequences(self):
+        text = "o corpo do texto teste tem apenas teste e texto, śo que mais teste";
+
+        doc = Document("apenas um outro teste")
+        doc.text = text
+        self.assertTrue(doc.save())
+
+        self.assertEqual(doc.frequences[1][0], "text")
+        self.assertEqual(doc.frequences[1][1], 0.125)
+
 unittest.main()
 
