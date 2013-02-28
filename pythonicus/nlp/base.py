@@ -102,7 +102,7 @@ class Document():
             if term in totals:
                 totals[term] += 1
             else:
-                totals[term] = 0
+                totals[term] = 1
 
         for key in totals.keys():
             self.frequences.append([key, float(totals[key])/total])

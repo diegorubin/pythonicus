@@ -97,7 +97,7 @@ class test_base(unittest.TestCase):
         self.assertTrue(doc.save())
 
         self.assertEqual(doc.frequences[1][0], "text")
-        self.assertEqual(doc.frequences[1][1], 0.125)
+        self.assertEqual(doc.frequences[1][1], 0.25)
 
 unittest.main()
 
